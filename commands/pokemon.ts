@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getElementById } from "domutils";
-import parser from "htmlparser2";
+import { parseDocument } from "htmlparser2";
 import {
 	APIApplicationCommandInteractionDataStringOption,
 	ApplicationCommandType,
@@ -49,7 +49,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				url,
 			});
 
-			const root = parser.parseDocument(response.data).children.find((value) => {
+			const root = parseDocument(response.data).children.find((value) => {
 				return value.name === "html";
 			});
 			const content = getElementById("content", root!, true)!;
