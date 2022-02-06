@@ -16,6 +16,7 @@ import {
 	getMovesRelatedToResearchTasks,
 	getResearchTasks,
 } from "../util/scraper";
+import { endpoint } from "../constant";
 
 const BASE_URL = `https://www.serebii.net`;
 
@@ -102,20 +103,19 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 					inline: true,
 				},
 			];
+
+			await axios({
+				method: "post",
+				url: `${endpoint}/interactions/${interaction.id}/${interaction.token}/callback`,
+				data: {
+					type: InteractionResponseType.ChannelMessageWithSource,
+					data: {
+						embeds: [responseEmbed],
+					},
+				},
+			});
 		} catch (e) {}
 
-		return {
-			type: InteractionResponseType.ChannelMessageWithSource,
-			data: {
-				embeds: [responseEmbed],
-			},
-		};
+		return;
 	}
-
-	return {
-		type: InteractionResponseType.ChannelMessageWithSource,
-		data: {
-			embeds: [{}],
-		},
-	};
 };
