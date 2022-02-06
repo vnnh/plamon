@@ -111,7 +111,16 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				},
 			});
 		} catch (e) {
-			console.log(e);
+			await axios({
+				method: "post",
+				url: `${endpoint}/interactions/${interaction.id}/${interaction.token}/callback`,
+				data: {
+					type: InteractionResponseType.ChannelMessageWithSource,
+					data: {
+						embeds: [{ description: `${messageOption.value} is not a Pokemon` }],
+					},
+				},
+			});
 		}
 
 		return;
