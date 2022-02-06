@@ -10,7 +10,7 @@ import {
 } from "../discord-api-types/v9";
 import {
 	getDexNumber,
-	getEvolutionInfo,
+	//getEvolutionInfo,
 	getLikedFood,
 	getLocations,
 	getMovesRelatedToResearchTasks,
