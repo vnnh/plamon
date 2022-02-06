@@ -44,7 +44,7 @@ export const getLocations = (content: Element) => {
 				element.name === "tr" &&
 				!!findOne(
 					(element) => {
-						return element.attribs["href"] !== undefined && !!element.attribs["href"].match("hisui");
+						return !!textContent(element).match("Legends: Arceus");
 					},
 					element.children,
 					true,
@@ -61,13 +61,13 @@ export const getLocations = (content: Element) => {
 						currentMajor += 1;
 						scrapedLocations[currentMajor] = {
 							name: textContent(element),
-							href: element.attribs.href,
+							href: element.attribs ? element.attribs.href : "",
 							regions: [],
 						};
 					} else if (element.name === "a") {
 						scrapedLocations[currentMajor].regions.push({
 							name: textContent(element),
-							href: element.attribs.href,
+							href: element.attribs ? element.attribs.href : "",
 						});
 					}
 				}
