@@ -1,0 +1,8 @@
+/node_modules
+/out
+/include
+*.tsbuildinfo
+.VSCodeCounter
+.vscode
+.env
+.vercel

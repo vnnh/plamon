@@ -1,0 +1,39 @@
+diff --git a/node_modules/domhandler/lib/node.d.ts b/node_modules/domhandler/lib/node.d.ts
+index cc5ef66..e2c65ca 100644
+--- a/node_modules/domhandler/lib/node.d.ts
++++ b/node_modules/domhandler/lib/node.d.ts
+@@ -6,11 +6,11 @@ import { ElementType } from "domelementtype";
+ export declare class Node {
+     type: ElementType;
+     /** Parent of the node */
+-    parent: NodeWithChildren | null;
++    parent: Element | null;
+     /** Previous sibling */
+-    prev: Node | null;
++    prev: Element | null;
+     /** Next sibling */
+-    next: Node | null;
++    next: Element | null;
+     /** The start index of the node. Requires `withStartIndices` on the handler to be `true. */
+     startIndex: number | null;
+     /** The end index of the node. Requires `withEndIndices` on the handler to be `true. */
+@@ -110,16 +110,16 @@ export declare class ProcessingInstruction extends DataNode {
+  * A `Node` that can have children.
+  */
+ export declare class NodeWithChildren extends Node {
+-    children: Node[];
++    children: Element[];
+     /**
+      * @param type Type of the node.
+      * @param children Children of the node. Only certain node types can have children.
+      */
+     constructor(type: ElementType.Root | ElementType.CDATA | ElementType.Script | ElementType.Style | ElementType.Tag, children: Node[]);
+     /** First child of the node. */
+-    get firstChild(): Node | null;
++    get firstChild(): Element | null;
+     /** Last child of the node. */
+-    get lastChild(): Node | null;
++    get lastChild(): Element | null;
+     /**
+      * Same as {@link children}.
+      * [DOM spec](https://dom.spec.whatwg.org)-compatible alias.

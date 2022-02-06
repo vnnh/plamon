@@ -1,0 +1,13 @@
+diff --git a/node_modules/domutils/lib/querying.d.ts b/node_modules/domutils/lib/querying.d.ts
+index e3dc7aa..8958cb6 100644
+--- a/node_modules/domutils/lib/querying.d.ts
++++ b/node_modules/domutils/lib/querying.d.ts
+@@ -18,7 +18,7 @@ export declare function filter(test: (elem: Node) => boolean, node: Node | Node[
+  * @param limit Maximum number of nodes to return.
+  * @returns All nodes passing `test`.
+  */
+-export declare function find(test: (elem: Node) => boolean, nodes: Node[], recurse: boolean, limit: number): Node[];
++export declare function find(test: (elem: Element) => boolean, nodes: Node[], recurse: boolean, limit: number): Element[];
+ /**
+  * Finds the first element inside of an array that matches a test function.
+  *
