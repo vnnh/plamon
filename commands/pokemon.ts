@@ -22,7 +22,7 @@ const BASE_URL = `https://www.serebii.net`;
 export const execute: CommandExport["execute"] = async (interaction) => {
 	if (interaction.type === InteractionType.ApplicationCommandAutocomplete) {
 		const messageOption = interaction.data?.options!.find((object) => {
-			return object.name === "pokemon";
+			return object.name === "name";
 		}) as APIApplicationCommandInteractionDataStringOption | undefined;
 
 		if (messageOption !== undefined) {
@@ -33,7 +33,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 		interaction.data.type === ApplicationCommandType.ChatInput
 	) {
 		const messageOption = interaction.data.options!.find((object) => {
-			return object.name === "pokemon";
+			return object.name === "name";
 		}) as APIApplicationCommandInteractionDataStringOption;
 
 		const url = `https://www.serebii.net/pokedex-swsh/${messageOption.value}/`;

@@ -6,7 +6,7 @@ module.exports = {
 		description: "get information on a pokemon",
 		options: [
 			{
-				type: ApplicationCommandOptionType.STRING,
+				type: ApplicationCommandOptionType.String,
 				name: "name",
 				description: "pokemon name",
 				required: true,
