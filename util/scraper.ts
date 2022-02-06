@@ -205,6 +205,10 @@ export const getLikedFood = (content: Element) => {
 		true,
 	);
 
+	if (!foodTable) {
+		return [];
+	}
+
 	const foods = find(
 		(element) => {
 			return element.attribs && element.attribs.class === "cen";
