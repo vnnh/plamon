@@ -72,11 +72,6 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 			responseEmbed.fields = [
 				{
-					name: "Liked Foods",
-					value: foods.map((value) => `[${value.name}](${BASE_URL}${value.href})`).join("\n"),
-					inline: true,
-				},
-				{
 					name: "Locations",
 					value: locations
 						.map((value) => {
@@ -99,6 +94,14 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 					inline: true,
 				},
 			];
+
+			if (foods.length > 0) {
+				responseEmbed.fields?.push({
+					name: "Liked Foods",
+					value: foods.map((value) => `[${value.name}](${BASE_URL}${value.href})`).join("\n"),
+					inline: true,
+				});
+			}
 
 			await axios({
 				method: "post",

@@ -309,7 +309,11 @@ export const getMovesRelatedToResearchTasks = (content: Element, tasks: ReturnTy
 			return (
 				!!findOne(
 					(element) => {
-						return element.name === "td" && !!textContent(element).match("Standard Level Up");
+						return (
+							element.name === "td" &&
+							(!!textContent(element).match("Standard Level Up") ||
+								!!textContent(element).match("Hisuian Form Level Up"))
+						);
 					},
 					element.children,
 					true,
