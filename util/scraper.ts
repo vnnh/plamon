@@ -1,7 +1,7 @@
 //maybe this could be cleaned up soon tm
 
 import { Element } from "domhandler";
-import { find, findOne, getChildren, textContent } from "domutils";
+import { find, findOne, getChildren, getElementById, textContent } from "domutils";
 
 const LIMIT = 100;
 
@@ -317,7 +317,8 @@ export const getMovesRelatedToResearchTasks = (content: Element, tasks: ReturnTy
 					},
 					element.children,
 					true,
-				) && element.parent!.attribs.id === "legends"
+				) &&
+				(!getElementById("swshbdsp", content) || element.parent!.attribs.id === "legends")
 			);
 		},
 		dexTables,
