@@ -114,7 +114,9 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 					},
 				},
 			});
-		} catch (e) {}
+		} catch (e) {
+			console.log(e);
+		}
 
 		return;
 	}
