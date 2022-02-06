@@ -75,11 +75,17 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 					name: "Locations",
 					value: locations
 						.map((value) => {
-							return `**[${value.name}](${BASE_URL}${value.href})** - ${value.regions
-								.map((value) => {
-									return `[${value.name}](${BASE_URL}${value.href})`;
-								})
-								.join(",")}`;
+							if (value.regions.length > 0) {
+								return `**[${value.name}](${BASE_URL}${value.href})** - ${value.regions
+									.map((value) => {
+										return `[${value.name}](${BASE_URL}${value.href})`;
+									})
+									.join(",")}`;
+							} else {
+								return value.href != ""
+									? `**[${value.name}](${BASE_URL}${value.href})**`
+									: `**${value.name}**`;
+							}
 						})
 						.join("\n"),
 					inline: true,
