@@ -55,7 +55,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 			const content = getElementById("content", root!, true)!;
 
 			const locations = getLocations(content);
-			const evolutions = getEvolutionInfo(content);
+			//const evolutions = getEvolutionInfo(content); //evolution tree structure on serebii is weird
 			const dexNumber = getDexNumber(content);
 			const foods = getLikedFood(content);
 			const tasks = getResearchTasks(content);
@@ -63,13 +63,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 			responseEmbed.title += ` ${dexNumber}`;
 
-			responseEmbed.description = `**Evolution Tree**
-			${evolutions
-				.map((value) => {
-					return `- [${value.name}](${BASE_URL}${value.href}): ${value.requirement}`;
-				})
-				.join("\n")}
-				**Tasks**
+			responseEmbed.description = `**Tasks**
 				${tasks
 					.map((value) => {
 						return `- ${value.double ? "[2x] " : ""}${value.description}`;
