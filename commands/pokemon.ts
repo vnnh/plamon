@@ -111,6 +111,8 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				},
 			});
 		} catch (e) {
+			console.log(e);
+			console.log(messageOption.value);
 			await axios({
 				method: "post",
 				url: `${endpoint}/interactions/${interaction.id}/${interaction.token}/callback`,
