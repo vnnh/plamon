@@ -63,16 +63,18 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 			responseEmbed.title += ` ${dexNumber}`;
 
-			responseEmbed.description = `**Evolution Tree**\n
+			responseEmbed.description = `**Evolution Tree**
 			${evolutions
 				.map((value) => {
 					return `- [${value.name}](${BASE_URL}${value.href}): ${value.requirement}`;
 				})
-				.join("\n")}\n**Tasks**\n${tasks
-				.map((value) => {
-					return `- ${value.double ? "[2x] " : ""}${value.description}`;
-				})
-				.join("\n")}`;
+				.join("\n")}
+				**Tasks**
+				${tasks
+					.map((value) => {
+						return `- ${value.double ? "[2x] " : ""}${value.description}`;
+					})
+					.join("\n")}`;
 
 			responseEmbed.fields = [
 				{
