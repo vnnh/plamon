@@ -70,8 +70,18 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 					})
 					.join("\n")}`;
 
-			responseEmbed.fields = [
-				{
+			responseEmbed.fields = [];
+
+			if (foods.length > 0) {
+				responseEmbed.fields?.push({
+					name: "Liked Foods",
+					value: foods.map((value) => `[${value.name}](${BASE_URL}${value.href})`).join("\n"),
+					inline: true,
+				});
+			}
+
+			if (locations.length > 0) {
+				responseEmbed.fields?.push({
 					name: "Locations",
 					value: locations
 						.map((value) => {
@@ -89,22 +99,17 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 						})
 						.join("\n"),
 					inline: true,
-				},
-				{
+				});
+			}
+
+			if (relatedMoves.length > 0) {
+				responseEmbed.fields?.push({
 					name: "Moves Related to Tasks",
 					value: relatedMoves
 						.map((value) => {
 							return `${value.name} (${value.levelInfo.join("/")})`;
 						})
 						.join("\n"),
-					inline: true,
-				},
-			];
-
-			if (foods.length > 0) {
-				responseEmbed.fields?.push({
-					name: "Liked Foods",
-					value: foods.map((value) => `[${value.name}](${BASE_URL}${value.href})`).join("\n"),
 					inline: true,
 				});
 			}
