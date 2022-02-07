@@ -14,6 +14,7 @@ import {
 	getLikedFood,
 	getLocations,
 	getMovesRelatedToResearchTasks,
+	getPokemonName,
 	getResearchTasks,
 } from "../util/scraper";
 import { endpoint } from "../constant";
@@ -39,7 +40,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 		const url = `https://www.serebii.net/pokedex-swsh/${messageOption.value.toLowerCase()}/`;
 		const responseEmbed: APIEmbed = {
-			title: messageOption.value,
+			title: "title",
 			url,
 		};
 
@@ -56,12 +57,13 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 			const locations = getLocations(content);
 			//const evolutions = getEvolutionInfo(content); //evolution tree structure on serebii is weird
+			const pokemonName = getPokemonName(content);
 			const dexNumber = getDexNumber(content);
 			const foods = getLikedFood(content);
 			const tasks = getResearchTasks(content);
 			const relatedMoves = getMovesRelatedToResearchTasks(content, tasks);
 
-			responseEmbed.title += ` ${dexNumber}`;
+			responseEmbed.title += `${pokemonName} ${dexNumber}`;
 
 			responseEmbed.description = `**Tasks**
 				${tasks

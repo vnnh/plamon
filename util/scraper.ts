@@ -144,6 +144,43 @@ export const getEvolutionInfo = (content: Element) => {
 	return scrapedEvolutions;
 };
 
+export const getPokemonName = (content: Element) => {
+	const dexTables = find(
+		(node) => {
+			return node.name === "table" && node.attribs["class"] === "dextable";
+		},
+		content.children,
+		true,
+		LIMIT,
+	);
+
+	const dexInfoNode = dexTables.find((node) => {
+		return !!findOne(
+			(element) => {
+				return !!findOne(
+					(element) => {
+						return element.name === "td" && !!textContent(element).match("No.");
+					},
+					getChildren(element),
+					true,
+				);
+			},
+			getChildren(node),
+			true,
+		);
+	});
+
+	return textContent(
+		findOne(
+			(element) => {
+				return element.name === "td" && element.attribs && element.attribs["class"] === "fooinfo";
+			},
+			getChildren(dexInfoNode!),
+			true,
+		)!,
+	).trim();
+};
+
 export const getDexNumber = (content: Element) => {
 	const dexTables = find(
 		(node) => {
