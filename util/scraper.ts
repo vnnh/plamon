@@ -177,8 +177,10 @@ export const getDexNumber = (content: Element) => {
 			},
 			getChildren(dexInfoNode!),
 			true,
-		)!.firstChild!.lastChild!,
-	);
+		)!.firstChild!.children!.find((value) => {
+			return !!textContent(value).match("Hisui");
+		})!,
+	).trim();
 };
 
 export const getLikedFood = (content: Element) => {
