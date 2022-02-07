@@ -47,7 +47,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 			return {
 				type: InteractionResponseType.ApplicationCommandAutocompleteResult,
 				data: {
-					choices: scores.slice(0, 10).map((value) => {
+					choices: scores.slice(0, 5).map((value) => {
 						return {
 							name: value.name,
 							value: value.name,
