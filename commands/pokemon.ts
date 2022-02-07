@@ -63,7 +63,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 			const tasks = getResearchTasks(content);
 			const relatedMoves = getMovesRelatedToResearchTasks(content, tasks);
 
-			responseEmbed.title += `${pokemonName} ${dexNumber}`;
+			responseEmbed.title = `${pokemonName} ${dexNumber}`;
 
 			responseEmbed.description = `**Tasks**
 				${tasks
