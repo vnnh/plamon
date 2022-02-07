@@ -39,7 +39,9 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				scores.push({ name: pokemonName, score: levenshtein(search, pokemonName) });
 			}
 
-			scores.sort();
+			scores.sort((a, b) => {
+				return a.score - b.score;
+			});
 
 			return {
 				type: InteractionResponseType.ApplicationCommandAutocompleteResult,
