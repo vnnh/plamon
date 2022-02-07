@@ -170,7 +170,7 @@ export const getDexNumber = (content: Element) => {
 		);
 	});
 
-	return textContent(
+	const text = textContent(
 		findOne(
 			(element) => {
 				return element.name === "td" && !!textContent(element).match("Hisui");
@@ -181,6 +181,9 @@ export const getDexNumber = (content: Element) => {
 			return !!textContent(value).match("Hisui");
 		})!,
 	).trim();
+
+	const dexNumberMatch = text.match(/\#\d+/g);
+	return dexNumberMatch ? dexNumberMatch[0] : "#000";
 };
 
 export const getLikedFood = (content: Element) => {
