@@ -37,7 +37,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 			const scores = [];
 
 			for (const pokemonName of pokedex) {
-				scores.push({ name: pokemonName, score: levenshtein(search, pokemonName) });
+				scores.push({ name: pokemonName, score: levenshtein(search.toLowerCase(), pokemonName.toLowerCase()) });
 			}
 
 			scores.sort((a, b) => {
@@ -47,7 +47,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 			return {
 				type: InteractionResponseType.ApplicationCommandAutocompleteResult,
 				data: {
-					choices: scores.slice(0, 25).map((value) => {
+					choices: scores.slice(0, 10).map((value) => {
 						return {
 							name: value.name,
 							value: value.name,
