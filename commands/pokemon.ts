@@ -37,7 +37,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 			return object.name === "name";
 		}) as APIApplicationCommandInteractionDataStringOption;
 
-		const url = `https://www.serebii.net/pokedex-swsh/${messageOption.value}/`;
+		const url = `https://www.serebii.net/pokedex-swsh/${messageOption.value.toLowerCase()}/`;
 		const responseEmbed: APIEmbed = {
 			title: messageOption.value,
 			url,
