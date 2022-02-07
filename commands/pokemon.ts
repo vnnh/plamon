@@ -18,6 +18,8 @@ import {
 	getResearchTasks,
 } from "../util/scraper";
 import { endpoint } from "../constant";
+import { pokedex } from "../data/pokedex";
+import levenshtein from "../util/levenshtein";
 
 const BASE_URL = `https://www.serebii.net`;
 
@@ -28,7 +30,28 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 		}) as APIApplicationCommandInteractionDataStringOption | undefined;
 
 		if (messageOption !== undefined) {
-			//todo autocomplete
+			const search = messageOption.value;
+
+			//this has a complete disregard for performance but this is a small bot :)
+			const scores = [];
+
+			for (const pokemonName of pokedex) {
+				scores.push({ name: pokemonName, score: levenshtein(search, pokemonName) });
+			}
+
+			scores.sort();
+
+			return {
+				type: InteractionResponseType.ApplicationCommandAutocompleteResult,
+				data: {
+					choices: scores.slice(0, 25).map((value) => {
+						return {
+							name: value.name,
+							value: value.name,
+						};
+					}),
+				},
+			};
 		}
 	} else if (
 		interaction.type === InteractionType.ApplicationCommand &&
