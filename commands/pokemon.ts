@@ -166,4 +166,6 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 		return;
 	}
+
+	return;
 };
