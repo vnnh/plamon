@@ -15,6 +15,7 @@ import {
 	getLocations,
 	getMovesRelatedToResearchTasks,
 	getPokemonName,
+	getRelativePokemonImage,
 	getResearchTasks,
 } from "../util/scraper";
 import { endpoint } from "../constant";
@@ -82,6 +83,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 			const locations = getLocations(content);
 			//const evolutions = getEvolutionInfo(content); //evolution tree structure on serebii is weird
+			const relativePokemonImagePath = getRelativePokemonImage(content);
 			const pokemonName = getPokemonName(content);
 			const dexNumber = getDexNumber(content);
 			const foods = getLikedFood(content);
@@ -89,6 +91,9 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 			const relatedMoves = getMovesRelatedToResearchTasks(content, tasks);
 
 			responseEmbed.title = `${pokemonName} ${dexNumber}`;
+			responseEmbed.thumbnail = {
+				url: `${BASE_URL}${relativePokemonImagePath}`,
+			};
 
 			responseEmbed.description = `**Tasks**
 				${tasks

@@ -144,6 +144,40 @@ export const getEvolutionInfo = (content: Element) => {
 	return scrapedEvolutions;
 };
 
+export const getRelativePokemonImage = (content: Element) => {
+	const dexTables = find(
+		(node) => {
+			return node.name === "table" && node.attribs["class"] === "dextable";
+		},
+		content.children,
+		true,
+		LIMIT,
+	);
+
+	let sprite = "";
+	dexTables.find((node) => {
+		return !!findOne(
+			(element) => {
+				const test =
+					element.name === "td" &&
+					element.attribs &&
+					element.attribs["class"] === "pkmn" &&
+					!!element.children?.[0]?.attribs?.alt.match("Sprite");
+
+				if (test === true) {
+					sprite = element.children[0].attribs.src;
+				}
+
+				return test;
+			},
+			getChildren(node),
+			true,
+		);
+	});
+
+	return sprite;
+};
+
 export const getPokemonName = (content: Element) => {
 	const dexTables = find(
 		(node) => {
