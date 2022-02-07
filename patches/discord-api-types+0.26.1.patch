@@ -1,0 +1,35 @@
+diff --git a/node_modules/discord-api-types/payloads/v9/_interactions/applicationCommands.d.ts b/node_modules/discord-api-types/payloads/v9/_interactions/applicationCommands.d.ts
+index d1c9264..cb003b1 100644
+--- a/node_modules/discord-api-types/payloads/v9/_interactions/applicationCommands.d.ts
++++ b/node_modules/discord-api-types/payloads/v9/_interactions/applicationCommands.d.ts
+@@ -54,7 +54,7 @@ export interface APIApplicationCommand {
+ /**
+  * https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types
+  */
+-export declare const enum ApplicationCommandType {
++export declare enum ApplicationCommandType {
+     ChatInput = 1,
+     User = 2,
+     Message = 3
+diff --git a/node_modules/discord-api-types/payloads/v9/_interactions/responses.d.ts b/node_modules/discord-api-types/payloads/v9/_interactions/responses.d.ts
+index 32e6ca1..1f2eea3 100644
+--- a/node_modules/discord-api-types/payloads/v9/_interactions/responses.d.ts
++++ b/node_modules/discord-api-types/payloads/v9/_interactions/responses.d.ts
+@@ -4,7 +4,7 @@ import type { APIApplicationCommandOptionChoice } from './applicationCommands';
+ /**
+  * https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-type
+  */
+-export declare const enum InteractionType {
++export declare enum InteractionType {
+     Ping = 1,
+     ApplicationCommand = 2,
+     MessageComponent = 3,
+@@ -39,7 +39,7 @@ export interface APIInteractionResponseUpdateMessage {
+ /**
+  * https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-type
+  */
+-export declare const enum InteractionResponseType {
++export declare enum InteractionResponseType {
+     /**
+      * ACK a `Ping`
+      */
