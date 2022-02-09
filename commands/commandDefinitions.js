@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType } = require("../discord-api-types/v9");
+const { ApplicationCommandOptionType } = require("discord-api-types/v9");
 
 module.exports = {
 	pokemon: {
