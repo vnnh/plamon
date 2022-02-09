@@ -154,21 +154,28 @@ export const getRelativePokemonImage = (content: Element) => {
 		LIMIT,
 	);
 
-	let sprite = "";
-	dexTables.find((node) => {
+	const sprite: string[] = [];
+	const dexInfoNode = dexTables.find((node) => {
 		return !!findOne(
 			(element) => {
-				const test =
-					element.name === "td" &&
-					element.attribs &&
-					element.attribs["class"] === "pkmn" &&
-					!!element.children?.[0]?.attribs?.alt.match("Sprite");
+				const test = element.name === "td" && element.attribs && element.attribs["class"] === "pkmn";
 
-				if (test === true) {
-					sprite = element.children[0].attribs.src;
+				if (test === true && element.children) {
+					for (const node of element.children) {
+						if (node.name === "img" && node.attribs) {
+							for (const [attribName, attribValue] of Object.entries(node.attribs)) {
+								if (typeof attribValue === "string") {
+									if (!!attribValue.toLowerCase().match("sprite")) {
+										sprite.push(node.attribs.src);
+										break;
+									}
+								}
+							}
+						}
+					}
 				}
 
-				return test;
+				return false;
 			},
 			getChildren(node),
 			true,

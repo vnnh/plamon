@@ -1,4 +1,4 @@
-import { APIInteraction, InteractionResponseType, InteractionType } from "../../discord-api-types/v9";
+import { APIInteraction, InteractionResponseType, InteractionType } from "discord-api-types/v9";
 import { readdirSync } from "fs";
 import { NextApiRequest, NextApiResponse } from "next";
 import path from "path";

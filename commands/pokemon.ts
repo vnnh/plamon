@@ -1,4 +1,5 @@
 import axios from "axios";
+import sharp from "sharp";
 import { getElementById } from "domutils";
 import { parseDocument } from "htmlparser2";
 import {
@@ -7,7 +8,7 @@ import {
 	InteractionResponseType,
 	InteractionType,
 	APIEmbed,
-} from "../discord-api-types/v9";
+} from "discord-api-types/v9";
 import {
 	getDexNumber,
 	//getEvolutionInfo,
@@ -83,16 +84,52 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 			const locations = getLocations(content);
 			//const evolutions = getEvolutionInfo(content); //evolution tree structure on serebii is weird
-			const relativePokemonImagePath = getRelativePokemonImage(content);
+			const relativePokemonImagePaths = getRelativePokemonImage(content);
 			const pokemonName = getPokemonName(content);
 			const dexNumber = getDexNumber(content);
 			const foods = getLikedFood(content);
 			const tasks = getResearchTasks(content);
 			const relatedMoves = getMovesRelatedToResearchTasks(content, tasks);
 
+			const baseImage = sharp({
+				create: { width: 200, height: 100, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
+			});
+
+			const normalSprite = sharp(
+				(
+					await axios({
+						url: `${BASE_URL}${relativePokemonImagePaths[0]}`,
+						method: "get",
+						responseType: "arraybuffer",
+					})
+				).data,
+			).resize(100, 100);
+			const shinySprite = sharp(
+				(
+					await axios({
+						url: `${BASE_URL}${relativePokemonImagePaths[1]}`,
+						method: "get",
+						responseType: "arraybuffer",
+					})
+				).data,
+			).resize(100, 100);
+
+			const finalImageBuffer = await baseImage
+				.composite([
+					{ input: await normalSprite.toBuffer(), left: 0, top: 0 },
+					{ input: await shinySprite.toBuffer(), left: 100, top: 0 },
+				])
+				.toBuffer();
+
 			responseEmbed.title = `${pokemonName} ${dexNumber}`;
 			responseEmbed.thumbnail = {
-				url: `${BASE_URL}${relativePokemonImagePath}`,
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				//@ts-ignore
+				url: {
+					attachment: finalImageBuffer,
+					name: "based.png",
+					file: finalImageBuffer,
+				}, //`${BASE_URL}${relativePokemonImagePath}`,
 			};
 
 			responseEmbed.description = `**Tasks**
