@@ -95,7 +95,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				create: { width: 200, height: 100, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
 			});
 
-			const normalSprite = sharp(
+			/**const normalSprite = sharp(
 				(
 					await axios({
 						url: `${BASE_URL}${relativePokemonImagePaths[0]}`,
@@ -120,17 +120,12 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 					{ input: await shinySprite.toBuffer(), left: 100, top: 0 },
 				])
 				.toBuffer();
+			*/
 
 			responseEmbed.title = `${pokemonName} ${dexNumber}`;
-			//responseEmbed.thumbnail = {
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			//@ts-ignore
-			//	url: {
-			//		attachment: finalImageBuffer,
-			//		name: "based.png",
-			//		file: finalImageBuffer,
-			//	}, //`${BASE_URL}${relativePokemonImagePath}`,
-			//};
+			responseEmbed.thumbnail = {
+				url: `${BASE_URL}${relativePokemonImagePaths[0]}`,
+			};
 
 			responseEmbed.description = `**Tasks**
 				${tasks
@@ -190,14 +185,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 					type: InteractionResponseType.ChannelMessageWithSource,
 					data: {
 						embeds: [responseEmbed],
-						attachments: [{ id: "1" }],
 					},
-					files: [
-						{
-							name: "based.txt",
-							data: "fortnite",
-						},
-					],
 				},
 			});
 		} catch (e) {
