@@ -197,7 +197,15 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				}),
 			);
 
-			formData.append("files[0]", finalImageBuffer, { filename: "sprite.png" });
+			formData.append(
+				"files[0]",
+				await axios({
+					url: `${BASE_URL}${relativePokemonImagePaths[1]}`,
+					method: "get",
+					responseType: "arraybuffer",
+				}),
+				{ filename: "sprite.png" },
+			);
 
 			return formData;
 			/**await axios({
