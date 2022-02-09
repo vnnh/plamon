@@ -190,17 +190,11 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 					type: InteractionResponseType.ChannelMessageWithSource,
 					data: {
 						embeds: [responseEmbed],
-						attachments: [
-							{
-								id: "1",
-								description: "fortnite",
-							},
-						],
 					},
 					files: [
 						{
-							name: "based.png",
-							data: finalImageBuffer,
+							name: "based.txt",
+							data: "fortnite",
 						},
 					],
 				},
