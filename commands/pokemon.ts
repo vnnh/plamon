@@ -22,6 +22,7 @@ import {
 import { endpoint } from "../constant";
 import { pokedex } from "../data/pokedex";
 import levenshtein from "../util/levenshtein";
+import FormData from "form-data";
 
 const BASE_URL = `https://www.serebii.net`;
 
@@ -71,6 +72,8 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 			url,
 		};
 
+		const formData = new FormData();
+
 		try {
 			const response = await axios({
 				method: "get",
@@ -95,7 +98,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				create: { width: 200, height: 100, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
 			});
 
-			/**const normalSprite = sharp(
+			const normalSprite = sharp(
 				(
 					await axios({
 						url: `${BASE_URL}${relativePokemonImagePaths[0]}`,
@@ -120,11 +123,10 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 					{ input: await shinySprite.toBuffer(), left: 100, top: 0 },
 				])
 				.toBuffer();
-			*/
 
 			responseEmbed.title = `${pokemonName} ${dexNumber}`;
 			responseEmbed.thumbnail = {
-				url: `${BASE_URL}${relativePokemonImagePaths[0]}`,
+				url: "attachment://sprite.png", //`${BASE_URL}${relativePokemonImagePaths[0]}`,
 			};
 
 			responseEmbed.description = `**Tasks**
@@ -178,7 +180,25 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				});
 			}
 
-			await axios({
+			formData.append(
+				"payload_json",
+				JSON.stringify({
+					embeds: [responseEmbed],
+					attachments: [
+						{
+							id: 0,
+							description: "sprites",
+							filename: "sprite.png",
+						},
+					],
+				}),
+			);
+
+			formData.append("files[0]", finalImageBuffer, { filename: "sprite.png" });
+
+			return formData;
+
+			/**await axios({
 				method: "post",
 				url: `${endpoint}/interactions/${interaction.id}/${interaction.token}/callback`,
 				data: {
@@ -187,7 +207,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 						embeds: [responseEmbed],
 					},
 				},
-			});
+			});*/
 		} catch (e) {
 			console.log(e);
 			console.log(messageOption.value);

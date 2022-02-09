@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 import parseBody from "../../util/parseBody";
 import verifyInteraction from "../../util/verifyInteraction";
+import FormData from "form-data";
 
 const { PUBLIC_KEY } = process.env;
 
@@ -59,7 +60,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		const commandResponse = await commands.get(interaction.data.name)!.execute(interaction as never);
 		res.status(200);
 		if (commandResponse) {
-			res.send(commandResponse);
+			if (commandResponse instanceof FormData) {
+				for (const [headerName, headerValue] of Object.entries(commandResponse.getHeaders())) {
+					res.setHeader(headerName, headerValue);
+				}
+
+				res.send(commandResponse);
+			} else {
+				res.send(commandResponse);
+			}
 		}
 	}
 };
