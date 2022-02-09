@@ -122,15 +122,15 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				.toBuffer();
 
 			responseEmbed.title = `${pokemonName} ${dexNumber}`;
-			responseEmbed.thumbnail = {
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				//@ts-ignore
-				url: {
-					attachment: finalImageBuffer,
-					name: "based.png",
-					file: finalImageBuffer,
-				}, //`${BASE_URL}${relativePokemonImagePath}`,
-			};
+			//responseEmbed.thumbnail = {
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			//@ts-ignore
+			//	url: {
+			//		attachment: finalImageBuffer,
+			//		name: "based.png",
+			//		file: finalImageBuffer,
+			//	}, //`${BASE_URL}${relativePokemonImagePath}`,
+			//};
 
 			responseEmbed.description = `**Tasks**
 				${tasks
@@ -190,7 +190,20 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 					type: InteractionResponseType.ChannelMessageWithSource,
 					data: {
 						embeds: [responseEmbed],
+						attachments: [
+							{
+								id: "1",
+								description: "fortnite",
+							},
+						],
 					},
+					files: [
+						{
+							attachment: finalImageBuffer,
+							name: "based.png",
+							file: finalImageBuffer,
+						},
+					],
 				},
 			});
 		} catch (e) {
