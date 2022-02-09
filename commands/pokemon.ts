@@ -183,24 +183,27 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 			formData.append(
 				"payload_json",
 				JSON.stringify({
-					embeds: [responseEmbed],
-					attachments: [
-						{
-							id: 0,
-							description: "sprites",
-							filename: "sprite.png",
-						},
-					],
+					type: InteractionResponseType.ChannelMessageWithSource,
+					data: {
+						embeds: [responseEmbed],
+						attachments: [
+							{
+								id: 0,
+								description: "sprites",
+								filename: "sprite.png",
+							},
+						],
+					},
 				}),
 			);
 
 			formData.append("files[0]", finalImageBuffer, { filename: "sprite.png" });
 
 			return formData;
-
 			/**await axios({
 				method: "post",
 				url: `${endpoint}/interactions/${interaction.id}/${interaction.token}/callback`,
+				headers: { ...formData.getHeaders() },
 				data: {
 					type: InteractionResponseType.ChannelMessageWithSource,
 					data: {
