@@ -130,7 +130,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				url: "attachment://sprite.png",
 			};
 
-			responseEmbed.description = `**Tasks**
+			responseEmbed.description = `\`Tasks\`
 				${tasks
 					.map((value) => {
 						return `- ${value.double ? "[2x] " : ""}${value.description}`;
@@ -141,7 +141,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 			if (foods.length > 0) {
 				responseEmbed.fields?.push({
-					name: "Liked Foods",
+					name: "`Liked Foods`",
 					value: foods.map((value) => `[${value.name}](${BASE_URL}${value.href})`).join("\n"),
 					inline: true,
 				});
@@ -149,7 +149,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 			if (locations.length > 0) {
 				responseEmbed.fields?.push({
-					name: "Locations",
+					name: "`Locations`",
 					value: locations
 						.map((value) => {
 							if (value.regions.length > 0) {
@@ -171,7 +171,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 			if (relatedMoves.length > 0) {
 				responseEmbed.fields?.push({
-					name: "Moves Related to Tasks",
+					name: "`Moves Related to Tasks`",
 					value: relatedMoves
 						.map((value) => {
 							return `${value.name} (${value.levelInfo.join("/")})`;
