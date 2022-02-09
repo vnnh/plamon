@@ -439,9 +439,10 @@ export const getMovesRelatedToResearchTasks = (content: Element, tasks: ReturnTy
 				(element) => {
 					return (
 						element.name === "td" &&
-						!!element.children.find((value) => {
-							return value.name === "br";
-						})
+						(!!textContent(element).match("—") ||
+							!!element.children.find((value) => {
+								return value.name === "br";
+							}))
 					);
 				},
 				entry.children,
