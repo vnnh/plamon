@@ -199,9 +199,8 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 					},
 					files: [
 						{
-							attachment: finalImageBuffer,
 							name: "based.png",
-							file: finalImageBuffer,
+							data: finalImageBuffer,
 						},
 					],
 				},
