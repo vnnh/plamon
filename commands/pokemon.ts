@@ -199,11 +199,13 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 			formData.append(
 				"files[0]",
-				await axios({
-					url: `${BASE_URL}${relativePokemonImagePaths[1]}`,
-					method: "get",
-					responseType: "arraybuffer",
-				}),
+				(
+					await axios({
+						url: `${BASE_URL}${relativePokemonImagePaths[1]}`,
+						method: "get",
+						responseType: "arraybuffer",
+					})
+				).data,
 				{ filename: "sprite.png" },
 			);
 
