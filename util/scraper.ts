@@ -155,7 +155,7 @@ export const getRelativePokemonImage = (content: Element) => {
 	);
 
 	const sprite: string[] = [];
-	const dexInfoNode = dexTables.find((node) => {
+	dexTables.find((node) => {
 		return !!findOne(
 			(element) => {
 				const test = element.name === "td" && element.attribs && element.attribs["class"] === "pkmn";
