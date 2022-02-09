@@ -127,7 +127,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 			responseEmbed.title = `${pokemonName} ${dexNumber}`;
 			responseEmbed.thumbnail = {
-				url: "attachment://sprite.png", //`${BASE_URL}${relativePokemonImagePaths[0]}`,
+				url: "attachment://sprite.png",
 			};
 
 			responseEmbed.description = `**Tasks**
@@ -201,17 +201,6 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 			formData.append("files[0]", finalImageBuffer, { filename: "sprite.png" });
 
 			return formData;
-			/**await axios({
-				method: "post",
-				url: `${endpoint}/interactions/${interaction.id}/${interaction.token}/callback`,
-				headers: { ...formData.getHeaders() },
-				data: {
-					type: InteractionResponseType.ChannelMessageWithSource,
-					data: {
-						embeds: [responseEmbed],
-					},
-				},
-			});*/
 		} catch (e) {
 			console.log(e);
 			console.log(messageOption.value);
