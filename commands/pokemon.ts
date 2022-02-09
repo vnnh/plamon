@@ -122,6 +122,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 					{ input: await normalSprite.toBuffer(), left: 0, top: 0 },
 					{ input: await shinySprite.toBuffer(), left: 100, top: 0 },
 				])
+				.png()
 				.toBuffer();
 
 			responseEmbed.title = `${pokemonName} ${dexNumber}`;
@@ -197,17 +198,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				}),
 			);
 
-			formData.append(
-				"files[0]",
-				(
-					await axios({
-						url: `${BASE_URL}${relativePokemonImagePaths[1]}`,
-						method: "get",
-						responseType: "arraybuffer",
-					})
-				).data,
-				{ filename: "sprite.png" },
-			);
+			formData.append("files[0]", finalImageBuffer, { filename: "sprite.png" });
 
 			return formData;
 			/**await axios({
