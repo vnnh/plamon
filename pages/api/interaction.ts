@@ -59,8 +59,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 		const commandResponse = await commands.get(interaction.data.name)!.execute(interaction as never);
 		res.status(200);
+		console.log("checkpoint 4");
 		if (commandResponse) {
+			console.log("checkpoint 5");
 			if (commandResponse instanceof FormData) {
+				console.log("checkpoint 6");
 				for (const [headerName, headerValue] of Object.entries(commandResponse.getHeaders())) {
 					res.setHeader(headerName, headerValue);
 				}

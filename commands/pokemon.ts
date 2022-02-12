@@ -27,7 +27,6 @@ import FormData from "form-data";
 const BASE_URL = `https://www.serebii.net`;
 
 export const execute: CommandExport["execute"] = async (interaction) => {
-	console.log("checkpoint 1");
 	if (interaction.type === InteractionType.ApplicationCommandAutocomplete) {
 		const messageOption = interaction.data?.options!.find((object) => {
 			return object.name === "name";
@@ -63,7 +62,6 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 		interaction.type === InteractionType.ApplicationCommand &&
 		interaction.data.type === ApplicationCommandType.ChatInput
 	) {
-		console.log("checkpoint 2");
 		const messageOption = interaction.data.options!.find((object) => {
 			return object.name === "name";
 		}) as APIApplicationCommandInteractionDataStringOption;
@@ -76,7 +74,6 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 		const formData = new FormData();
 
-		console.log("checkpoint 3");
 		try {
 			const response = await axios({
 				method: "get",
