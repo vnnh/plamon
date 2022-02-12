@@ -147,48 +147,110 @@ export const getEvolutionInfo = (content: Element) => {
 			if (test === true) {
 				const list = element.children.find((element) => element.name === "table")!.children;
 
+				//eevee has a unique evolution format
+				let hasTransitionRow = false;
+				const transitionIndices: Evolution[] = [];
+
 				let lastSpanLevel = 0;
+				let rowCount = 0;
+				let encounteredRootTD = false;
+				let rootTDIndex = 0;
 				for (const row of list) {
+					//eevee page is weird
+					if (row.name === "td" && row.attribs["class"] === "pkmn") {
+						if (!encounteredRootTD) {
+							encounteredRootTD = true;
+							rowCount += 1;
+						}
+
+						if (!transitionIndices[rootTDIndex]) {
+							//@ts-ignore
+							transitionIndices[rootTDIndex] = {};
+						}
+
+						transitionIndices[rootTDIndex]["name"] = capitalizeFirstLetter(
+							row.firstChild!.attribs.href.match(/\/pokedex-swsh\/(.+)/)![1],
+						);
+						transitionIndices[rootTDIndex]["href"] = row.firstChild!.attribs.href;
+
+						transitionIndices[rootTDIndex]["level"] = rowCount;
+
+						rootTDIndex += 1;
+					}
+
 					if (row.name !== "tr") continue;
 
+					const isTransitionRow = !row.children.find((element) => {
+						return element.name === "td" && element.attribs["class"] === "pkmn";
+					});
+					if (!hasTransitionRow) {
+						hasTransitionRow = isTransitionRow;
+					}
+
+					if (!isTransitionRow) {
+						rowCount += 1;
+					}
+
 					let rowIndex = 0;
-					for (const element of row.children) {
-						//is pokemon element
-						if (element.name === "td" && element.attribs["class"] === "pkmn") {
-							if (element.attribs["rowspan"]) {
-								lastSpanLevel += 1;
-							}
+					if (!hasTransitionRow) {
+						for (let element of row.children) {
+							//is pokemon element
+							if (element.name === "td" && element.attribs["class"] === "pkmn") {
+								//eevee has a double layer td
+								const result = findOne((element) => element.name === "td", element.children, true);
+								if (!!result) {
+									element = result;
+								}
 
-							if (!!element.firstChild!.firstChild!.attribs.src.match("-")) {
-								continue;
-							}
+								if (element.attribs["rowspan"]) {
+									lastSpanLevel += 1;
+								}
 
-							if (!scrapedEvolutions[evoIndex]) {
+								if (!!element.firstChild!.firstChild!.attribs.src.match("-")) {
+									continue;
+								}
+
+								if (!scrapedEvolutions[evoIndex]) {
+									//@ts-ignore
+									scrapedEvolutions[evoIndex] = {};
+								}
+
+								scrapedEvolutions[evoIndex]["name"] = capitalizeFirstLetter(
+									element.firstChild!.attribs.href.match(/\/pokedex-swsh\/(.+)/)![1],
+								);
+								scrapedEvolutions[evoIndex]["href"] = element.firstChild!.attribs.href;
+
+								if (element.attribs["rowspan"]) {
+									scrapedEvolutions[evoIndex]["level"] = lastSpanLevel;
+								} else {
+									rowIndex += 1;
+									scrapedEvolutions[evoIndex]["level"] = lastSpanLevel + rowIndex;
+								}
+							} else if (element.name === "td") {
+								//is transition element
+								evoIndex += 1;
 								//@ts-ignore
-								scrapedEvolutions[evoIndex] = {};
+								scrapedEvolutions[evoIndex] = {
+									requirement: interpretEvolutionTransitionElement(element),
+								};
 							}
+						}
+					} else {
+						for (const element of row.children) {
+							if (element.name === "td" && element.attribs["class"] !== "pkmn") {
+								//is transition element
+								//@ts-ignore
+								transitionIndices.push({
+									requirement: interpretEvolutionTransitionElement(element),
+								});
 
-							scrapedEvolutions[evoIndex]["name"] = capitalizeFirstLetter(
-								element.firstChild!.attribs.href.match(/\/pokedex-swsh\/(.+)/)![1],
-							);
-							scrapedEvolutions[evoIndex]["href"] = element.firstChild!.attribs.href;
-
-							if (element.attribs["rowspan"]) {
-								scrapedEvolutions[evoIndex]["level"] = lastSpanLevel;
-							} else {
 								rowIndex += 1;
-								scrapedEvolutions[evoIndex]["level"] = lastSpanLevel + rowIndex;
 							}
-						} else if (element.name === "td") {
-							//is transition element
-							evoIndex += 1;
-							//@ts-ignore
-							scrapedEvolutions[evoIndex] = {
-								requirement: interpretEvolutionTransitionElement(element),
-							};
 						}
 					}
 				}
+
+				scrapedEvolutions = scrapedEvolutions.concat(transitionIndices);
 			}
 
 			return false;
