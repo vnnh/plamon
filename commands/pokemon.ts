@@ -130,7 +130,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				url: "attachment://sprite.png",
 			};
 
-			responseEmbed.description = `\`Evolution\`
+			responseEmbed.description = `\`Evolution Line\`
 			${evolutions
 				.map((value) => {
 					return `${"-".repeat(value.level)} ${value.requirement ? `${value.requirement}: ` : ``}[${
