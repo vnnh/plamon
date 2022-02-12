@@ -30,7 +30,7 @@ export const getLocations = (content: Element) => {
 	const locationTableNode = dexTables.find((node) => {
 		return !!findOne(
 			(element) => {
-				return element.attribs["href"] === "locations.shtml";
+				return !!textContent(element).match("Locations");
 			},
 			getChildren(node),
 			true,
