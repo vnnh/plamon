@@ -217,7 +217,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 			return;
 		} catch (e) {
-			console.log((e as AxiosError).response?.data?.embeds);
+			console.log((e as AxiosError).response?.data?.errors?.embeds["0"]);
 			console.log(messageOption.value);
 			await axios({
 				method: "post",
