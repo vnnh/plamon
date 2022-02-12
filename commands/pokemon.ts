@@ -159,6 +159,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				responseEmbed.fields?.push({
 					name: "`Locations`",
 					value: locations
+						.slice(0, 4)
 						.map((value) => {
 							if (value.regions.length > 0) {
 								return `**[${value.name}](${BASE_URL}${value.href})** - ${value.regions
@@ -208,16 +209,9 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 			formData.append("files[0]", finalImageBuffer, { filename: "sprite.png" });
 
-			await axios({
-				method: "post",
-				url: `${endpoint}/interactions/${interaction.id}/${interaction.token}/callback`,
-				data: formData,
-				headers: formData.getHeaders(),
-			});
-
-			return;
+			return formData;
 		} catch (e) {
-			console.log((e as AxiosError).response?.data?.errors?.data?.embeds["0"]);
+			console.log(e);
 			console.log(messageOption.value);
 			await axios({
 				method: "post",
