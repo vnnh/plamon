@@ -133,7 +133,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 			responseEmbed.description = `\`Evolution\`
 			${evolutions
 				.map((value) => {
-					return `${"-".repeat(value.level - 1)} ${value.requirement ? `${value.requirement}: ` : ``}[${
+					return `${"-".repeat(value.level)} ${value.requirement ? `${value.requirement}: ` : ``}[${
 						value.name
 					}](${BASE_URL}${value.href})`;
 				})
