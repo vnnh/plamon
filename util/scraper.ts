@@ -88,6 +88,35 @@ const capitalizeFirstLetter = (name: string) => {
 	return name.charAt(0).toLocaleUpperCase() + name.slice(1);
 };
 
+const interpretEvolutionTransitionElement = (element: Element) => {
+	let requirement = "";
+	if (element.children.length === 0) {
+		requirement = "no requirement";
+	} else {
+		if (
+			element.firstChild!.name === "img" &&
+			!!element.firstChild!.attribs.src.match(/\d+/) &&
+			(!element.firstChild!.attribs.title ||
+				!element.firstChild!.attribs.alt ||
+				!element.firstChild!.attribs.title.match(/Level \d/) ||
+				!element.firstChild!.attribs.alt.match(/Level \d/))
+		) {
+			const pre = element.firstChild!.attribs.title || element.firstChild!.attribs.alt || "Level ";
+
+			requirement = `${pre}${element.firstChild!.attribs.src.match(/(\d+)/)![1]}`;
+		} else if (element.firstChild?.attribs?.title) {
+			requirement = element.firstChild.attribs.title.replace(/ +(?= )/g, "");
+		} else if (element.firstChild!.firstChild?.attribs?.alt) {
+			requirement = element.firstChild!.firstChild.attribs.alt.replace(/ +(?= )/g, "");
+		} else if (element.firstChild!.firstChild?.attribs?.title) {
+			//the regex replace is for Scizor, which has a double space ('Trade with  Metal Coat')
+			requirement = element.firstChild!.firstChild.attribs.title.replace(/ +(?= )/g, "");
+		}
+	}
+
+	return requirement.replace("�", "e");
+};
+
 export const getEvolutionInfo = (content: Element) => {
 	const dexTables = find(
 		(node) => {
@@ -154,47 +183,9 @@ export const getEvolutionInfo = (content: Element) => {
 							//is transition element
 							evoIndex += 1;
 							//@ts-ignore
-							scrapedEvolutions[evoIndex] = {};
-
-							const container = element;
-							if (container.children.length === 0) {
-								scrapedEvolutions[evoIndex].requirement = "no requirement";
-							} else {
-								if (
-									element.firstChild!.name === "img" &&
-									!!element.firstChild!.attribs.src.match(/\d+/) &&
-									(!element.firstChild!.attribs.title ||
-										!element.firstChild!.attribs.alt ||
-										!element.firstChild!.attribs.title.match(/Level \d/) ||
-										!element.firstChild!.attribs.alt.match(/Level \d/))
-								) {
-									const pre =
-										element.firstChild!.attribs.title ||
-										element.firstChild!.attribs.alt ||
-										"Level ";
-
-									scrapedEvolutions[evoIndex].requirement = `${pre}${
-										element.firstChild!.attribs.src.match(/(\d+)/)![1]
-									}`;
-								} else if (element.firstChild?.attribs?.title) {
-									scrapedEvolutions[evoIndex].requirement = element.firstChild.attribs.title.replace(
-										/ +(?= )/g,
-										"",
-									);
-								} else if (element.firstChild!.firstChild?.attribs?.alt) {
-									scrapedEvolutions[evoIndex].requirement =
-										element.firstChild!.firstChild.attribs.alt.replace(/ +(?= )/g, "");
-								} else if (element.firstChild!.firstChild?.attribs?.title) {
-									//the regex replace is for Scizor, which has a double space ('Trade with  Metal Coat')
-									scrapedEvolutions[evoIndex].requirement =
-										element.firstChild!.firstChild.attribs.title.replace(/ +(?= )/g, "");
-								}
-							}
-
-							scrapedEvolutions[evoIndex].requirement = scrapedEvolutions[evoIndex].requirement.replace(
-								"�",
-								"e",
-							);
+							scrapedEvolutions[evoIndex] = {
+								requirement: interpretEvolutionTransitionElement(element),
+							};
 						}
 					}
 				}
