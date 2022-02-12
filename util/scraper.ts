@@ -190,6 +190,11 @@ export const getEvolutionInfo = (content: Element) => {
 										element.firstChild!.firstChild.attribs.title.replace(/ +(?= )/g, "");
 								}
 							}
+
+							scrapedEvolutions[evoIndex].requirement = scrapedEvolutions[evoIndex].requirement.replace(
+								"�",
+								"e",
+							);
 						}
 					}
 				}
