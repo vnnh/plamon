@@ -206,7 +206,7 @@ export const getEvolutionInfo = (content: Element) => {
 		true,
 	);
 
-	scrapedEvolutions = scrapedEvolutions.filter((value) => value.name).sort((a, b) => a.level - b.level);
+	scrapedEvolutions = scrapedEvolutions.filter((value) => value.name);
 
 	return scrapedEvolutions;
 };
