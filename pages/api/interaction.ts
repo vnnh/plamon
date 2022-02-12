@@ -62,8 +62,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		if (commandResponse) {
 			if (commandResponse instanceof FormData) {
 				for (const [headerName, headerValue] of Object.entries(commandResponse.getHeaders())) {
-					console.log(headerValue);
-					console.log((headerValue as string).length);
 					res.setHeader(headerName, headerValue);
 				}
 

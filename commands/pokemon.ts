@@ -208,7 +208,14 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 			formData.append("files[0]", finalImageBuffer, { filename: "sprite.png" });
 
-			return formData;
+			await axios({
+				method: "post",
+				url: `${endpoint}/interactions/${interaction.id}/${interaction.token}/callback`,
+				data: formData,
+				headers: formData.getHeaders(),
+			});
+
+			return;
 		} catch (e) {
 			console.log(e);
 			console.log(messageOption.value);
