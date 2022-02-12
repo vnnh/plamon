@@ -165,7 +165,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 									.map((value) => {
 										return `[${value.name}](${BASE_URL}${value.href})`;
 									})
-									.join(",")}`;
+									.join(", ")}`;
 							} else {
 								return value.href != ""
 									? `**[${value.name}](${BASE_URL}${value.href})**`
