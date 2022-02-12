@@ -11,7 +11,7 @@ import {
 } from "discord-api-types/v9";
 import {
 	getDexNumber,
-	//getEvolutionInfo,
+	getEvolutionInfo,
 	getLikedFood,
 	getLocations,
 	getMovesRelatedToResearchTasks,
@@ -86,7 +86,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 			const content = getElementById("content", root!, true)!;
 
 			const locations = getLocations(content);
-			//const evolutions = getEvolutionInfo(content); //evolution tree structure on serebii is weird
+			const evolutions = getEvolutionInfo(content); //evolution tree structure on serebii is weird
 			const relativePokemonImagePaths = getRelativePokemonImage(content);
 			const pokemonName = getPokemonName(content);
 			const dexNumber = getDexNumber(content);
@@ -130,7 +130,15 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				url: "attachment://sprite.png",
 			};
 
-			responseEmbed.description = `\`Tasks\`
+			responseEmbed.description = `\`Evolution\`
+			${evolutions
+				.map((value) => {
+					return `${"-".repeat(value.level - 1)} ${value.requirement ? `${value.requirement}: ` : ``}[${
+						value.name
+					}](${BASE_URL}${value.href})`;
+				})
+				.join("\n")}
+			\`Tasks\`
 				${tasks
 					.map((value) => {
 						return `- ${value.double ? "[2x] " : ""}${value.description}`;

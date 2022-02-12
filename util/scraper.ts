@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 //maybe this could be cleaned up soon tm
 
 import { Element } from "domhandler";
@@ -15,6 +16,7 @@ type Evolution = {
 	name: string;
 	href: string;
 	requirement: string;
+	level: number;
 };
 
 export const getLocations = (content: Element) => {
@@ -82,6 +84,10 @@ export const getLocations = (content: Element) => {
 	return scrapedLocations;
 };
 
+const capitalizeFirstLetter = (name: string) => {
+	return name.charAt(0).toLocaleUpperCase() + name.slice(1);
+};
+
 export const getEvolutionInfo = (content: Element) => {
 	const dexTables = find(
 		(node) => {
@@ -102,44 +108,100 @@ export const getEvolutionInfo = (content: Element) => {
 		);
 	});
 
-	const scrapedEvolutions: Evolution[] = [];
-	let evoIndex = -1;
+	let scrapedEvolutions: Evolution[] = [];
+	let evoIndex = 0;
 
 	findOne(
 		(element) => {
 			const test = element.name === "td" && element.attribs["class"] === "fooinfo";
 
 			if (test === true) {
-				const list = element.children
-					.find((element) => element.name === "table")!
-					.children.find((element) => element.name === "tr")!.children;
+				const list = element.children.find((element) => element.name === "table")!.children;
 
-				for (const element of list) {
-					if (element.name === "td" && element.attribs["class"] === "pkmn") {
-						evoIndex += 1;
+				let lastSpanLevel = 0;
+				for (const row of list) {
+					if (row.name !== "tr") continue;
 
-						scrapedEvolutions[evoIndex] = {
-							name: element.firstChild!.firstChild!.attribs.alt,
-							href: element.firstChild!.attribs.href,
-							requirement: "",
-						};
-					} else if (element.name === "td") {
-						const container = element.firstChild;
-						if (container!.children!.length === 0) {
-							scrapedEvolutions[evoIndex].requirement = element.firstChild!.attribs.title ?? "";
-						} else {
-							scrapedEvolutions[evoIndex].requirement =
-								element.firstChild!.firstChild!.attribs.title ?? "";
+					let rowIndex = 0;
+					for (const element of row.children) {
+						//is pokemon element
+						if (element.name === "td" && element.attribs["class"] === "pkmn") {
+							if (element.attribs["rowspan"]) {
+								lastSpanLevel += 1;
+							}
+
+							if (!!element.firstChild!.firstChild!.attribs.src.match("-")) {
+								continue;
+							}
+
+							if (!scrapedEvolutions[evoIndex]) {
+								//@ts-ignore
+								scrapedEvolutions[evoIndex] = {};
+							}
+
+							scrapedEvolutions[evoIndex]["name"] = capitalizeFirstLetter(
+								element.firstChild!.attribs.href.match(/\/pokedex-swsh\/(.+)/)![1],
+							);
+							scrapedEvolutions[evoIndex]["href"] = element.firstChild!.attribs.href;
+
+							if (element.attribs["rowspan"]) {
+								scrapedEvolutions[evoIndex]["level"] = lastSpanLevel;
+							} else {
+								rowIndex += 1;
+								scrapedEvolutions[evoIndex]["level"] = lastSpanLevel + rowIndex;
+							}
+						} else if (element.name === "td") {
+							//is transition element
+							evoIndex += 1;
+							//@ts-ignore
+							scrapedEvolutions[evoIndex] = {};
+
+							const container = element;
+							if (container.children.length === 0) {
+								scrapedEvolutions[evoIndex].requirement = "no requirement";
+							} else {
+								if (
+									element.firstChild!.name === "img" &&
+									!!element.firstChild!.attribs.src.match(/\d+/) &&
+									(!element.firstChild!.attribs.title ||
+										!element.firstChild!.attribs.alt ||
+										!element.firstChild!.attribs.title.match(/Level \d/) ||
+										!element.firstChild!.attribs.alt.match(/Level \d/))
+								) {
+									const pre =
+										element.firstChild!.attribs.title ||
+										element.firstChild!.attribs.alt ||
+										"Level ";
+
+									scrapedEvolutions[evoIndex].requirement = `${pre}${
+										element.firstChild!.attribs.src.match(/(\d+)/)![1]
+									}`;
+								} else if (element.firstChild?.attribs?.title) {
+									scrapedEvolutions[evoIndex].requirement = element.firstChild.attribs.title.replace(
+										/ +(?= )/g,
+										"",
+									);
+								} else if (element.firstChild!.firstChild?.attribs?.alt) {
+									scrapedEvolutions[evoIndex].requirement =
+										element.firstChild!.firstChild.attribs.alt.replace(/ +(?= )/g, "");
+								} else if (element.firstChild!.firstChild?.attribs?.title) {
+									//the regex replace is for Scizor, which has a double space ('Trade with  Metal Coat')
+									scrapedEvolutions[evoIndex].requirement =
+										element.firstChild!.firstChild.attribs.title.replace(/ +(?= )/g, "");
+								}
+							}
 						}
 					}
 				}
 			}
 
-			return test;
+			return false;
 		},
 		getChildren(evolutionSectionNode!),
 		true,
 	);
+
+	scrapedEvolutions = scrapedEvolutions.filter((value) => value.name).sort((a, b) => a.level - b.level);
 
 	return scrapedEvolutions;
 };
