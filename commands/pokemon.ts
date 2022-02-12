@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import sharp from "sharp";
 import { getElementById } from "domutils";
 import { parseDocument } from "htmlparser2";
@@ -217,7 +217,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 
 			return;
 		} catch (e) {
-			console.log(e);
+			console.log((e as AxiosError).response?.data.errors);
 			console.log(messageOption.value);
 			await axios({
 				method: "post",
