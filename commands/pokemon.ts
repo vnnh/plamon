@@ -126,7 +126,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				.png()
 				.toBuffer();
 
-			const dominantColorHex = (await Vibrant.from(normalSpriteBuffer).getPalette()).DarkVibrant!.hex.replace(
+			const dominantColorHex = (await Vibrant.from(normalSpriteBuffer).getPalette()).Vibrant!.hex.replace(
 				"#",
 				"",
 			);
