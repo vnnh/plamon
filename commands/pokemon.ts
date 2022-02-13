@@ -159,7 +159,7 @@ export const execute: CommandExport["execute"] = async (interaction) => {
 				responseEmbed.fields?.push({
 					name: "`Locations`",
 					value: locations
-						.slice(0, 4)
+						.slice(0, 3)
 						.map((value) => {
 							if (value.regions.length > 0) {
 								return `**[${value.name}](${BASE_URL}${value.href})** - ${value.regions
