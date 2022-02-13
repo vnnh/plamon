@@ -562,7 +562,8 @@ export const getMovesRelatedToResearchTasks = (content: Element, tasks: ReturnTy
 						(!!textContent(element).match("—") ||
 							!!element.children.find((value) => {
 								return value.name === "br";
-							}))
+							}) ||
+							!!textContent(element).match(/^\d+$/))
 					);
 				},
 				entry.children,
@@ -571,10 +572,14 @@ export const getMovesRelatedToResearchTasks = (content: Element, tasks: ReturnTy
 
 			const levels = [];
 
-			for (const level of learnLevelList!.children) {
-				const text = textContent(level);
-				if (text.trim() != "") {
-					levels.push(text);
+			if (!!textContent(learnLevelList!).match(/^\d+$/)) {
+				levels.push(textContent(learnLevelList!));
+			} else {
+				for (const level of learnLevelList!.children) {
+					const text = textContent(level);
+					if (text.trim() != "") {
+						levels.push(text);
+					}
 				}
 			}
 
