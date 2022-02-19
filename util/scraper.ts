@@ -98,8 +98,10 @@ const interpretEvolutionTransitionElement = (element: Element) => {
 			!!element.firstChild!.attribs.src.match(/\d+/) &&
 			(!element.firstChild!.attribs.title ||
 				!element.firstChild!.attribs.alt ||
-				!element.firstChild!.attribs.title.match(/Level \d/) ||
-				!element.firstChild!.attribs.alt.match(/Level \d/))
+				((!element.firstChild!.attribs.title.match(/Level \d/) ||
+					!element.firstChild!.attribs.alt.match(/Level \d/)) &&
+					(!element.firstChild!.attribs.title.match(/Level \w/) ||
+						!element.firstChild!.attribs.alt.match(/Level \w/))))
 		) {
 			const pre = element.firstChild!.attribs.title || element.firstChild!.attribs.alt || "Level ";
 
